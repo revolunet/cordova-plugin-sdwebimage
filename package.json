@@ -1,0 +1,19 @@
+{
+  "name": "cordova-plugin-sdwebimage",
+  "version": "1.0.0",
+  "description": "Optimise image loading in your cordova app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Synchronized-TV/cordova-plugin-sdwebimage.git"
+  },
+  "author": "Julien Bouquillon <julien.bouquillon@synchronized.tv>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Synchronized-TV/cordova-plugin-sdwebimage/issues"
+  },
+  "homepage": "https://github.com/Synchronized-TV/cordova-plugin-sdwebimage#readme"
+}

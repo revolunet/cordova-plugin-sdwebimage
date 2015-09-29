@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-sdwebimage" version="1.0.0">
+
+    <name>cordova-plugin-sdwebimage</name>
+    <description>Optimise image loading in your cordova app</description>
+    <license>MIT</license>
+    <repo>https://github.com/Synchronized-TV/cordova-plugin-sdwebimage.git</repo>
+
+    <engines>
+        <engine name="cordova" version="3.*" />
+    </engines>
+
+    <js-module src="www/plugin.js" name="SDWebImage">
+        <clobbers target="cordova.plugins.SDWebImage"/>
+    </js-module>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="CDVSDWebImage">
+                <param name="ios-package" value="CDVSDWebImage" />
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/CDVSDWebImage.h" />
+        <source-file src="src/ios/CDVSDWebImage.m" />
+
+        <framework src="SystemConfiguration.framework"/>
+
+    </platform>
+</plugin>
