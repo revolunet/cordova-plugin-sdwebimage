@@ -18,13 +18,45 @@
         <config-file target="config.xml" parent="/*">
             <feature name="CDVSDWebImage">
                 <param name="ios-package" value="CDVSDWebImage" />
+                <param name="onload" value="true" />
             </feature>
         </config-file>
+
+        <framework src="ImageIO.framework" weak="true" />
 
         <header-file src="src/ios/CDVSDWebImage.h" />
         <source-file src="src/ios/CDVSDWebImage.m" />
 
-        <framework src="SystemConfiguration.framework"/>
+        <header-file src="libs/ios/WebViewProxy/WebViewProxy.h"/>
+        <source-file src="libs/ios/WebViewProxy/WebViewProxy.m"/>
+
+        <header-file src="libs/ios/SDWebImage/NSData+ImageContentType.h"/>
+        <source-file src="libs/ios/SDWebImage/NSData+ImageContentType.m"/>
+        <header-file src="libs/ios/SDWebImage/SDImageCache.h"/>
+        <source-file src="libs/ios/SDWebImage/SDImageCache.m"/>
+        <header-file src="libs/ios/SDWebImage/SDWebImageCompat.h"/>
+        <source-file src="libs/ios/SDWebImage/SDWebImageCompat.m"/>
+        <header-file src="libs/ios/SDWebImage/SDWebImageDecoder.h"/>
+        <source-file src="libs/ios/SDWebImage/SDWebImageDecoder.m"/>
+        <header-file src="libs/ios/SDWebImage/SDWebImageDownloader.h"/>
+        <source-file src="libs/ios/SDWebImage/SDWebImageDownloader.m"/>
+        <header-file src="libs/ios/SDWebImage/SDWebImageDownloaderOperation.h"/>
+        <source-file src="libs/ios/SDWebImage/SDWebImageDownloaderOperation.m"/>
+        <header-file src="libs/ios/SDWebImage/SDWebImageManager.h"/>
+        <source-file src="libs/ios/SDWebImage/SDWebImageManager.m"/>
+        <header-file src="libs/ios/SDWebImage/SDWebImageOperation.h"/>
+        <header-file src="libs/ios/SDWebImage/SDWebImagePrefetcher.h"/>
+        <source-file src="libs/ios/SDWebImage/SDWebImagePrefetcher.m"/>
+        <header-file src="libs/ios/SDWebImage/UIImage+GIF.h"/>
+        <source-file src="libs/ios/SDWebImage/UIImage+GIF.m"/>
+        <header-file src="libs/ios/SDWebImage/UIImage+MultiFormat.h"/>
+        <source-file src="libs/ios/SDWebImage/UIImage+MultiFormat.m"/>
+        <header-file src="libs/ios/SDWebImage/UIImage+WebP.h"/>
+        <source-file src="libs/ios/SDWebImage/UIImage+WebP.m"/>
+        <header-file src="libs/ios/SDWebImage/UIImageView+WebCache.h"/>
+        <source-file src="libs/ios/SDWebImage/UIImageView+WebCache.m"/>
+        <header-file src="libs/ios/SDWebImage/UIView+WebCacheOperation.h"/>
+        <source-file src="libs/ios/SDWebImage/UIView+WebCacheOperation.m"/>
 
     </platform>
 </plugin>

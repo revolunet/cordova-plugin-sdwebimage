@@ -1,9 +1,17 @@
 
-#import <Cordova/CDVPlugin.h>
 
-@interface CDVForceNetwork : CDVPlugin {}
+#import <Cordova/CDV.h>
+#import "UIImageView+WebCache.h"
 
-- (void) openNetworkSettings;
-- (void) openNetworkSettings:(CDVInvokedUrlCommand*)command;
+@interface CDVSDWebImage : CDVPlugin<SDWebImageManagerDelegate> {
+    NSDictionary *options;
+    NSMutableDictionary *indexes;
+    SDWebImageManager *manager;
+}
+
+- (void)getImage:(CDVInvokedUrlCommand*)command;
+- (void)clearCache:(CDVInvokedUrlCommand*)command;
+- (void)getCacheInfo:(CDVInvokedUrlCommand*)command;
+
 
 @end
