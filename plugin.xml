@@ -4,7 +4,7 @@
     <name>cordova-plugin-sdwebimage</name>
     <description>Optimise image loading in your cordova app</description>
     <license>MIT</license>
-    <repo>https://github.com/Synchronized-TV/cordova-plugin-sdwebimage.git</repo>
+    <repo>https://github.com/revolunet/cordova-plugin-sdwebimage.git</repo>
 
     <engines>
         <engine name="cordova" version="3.*" />

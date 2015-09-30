@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Synchronized-TV/cordova-plugin-sdwebimage.git"
+    "url": "git+https://github.com/revolunet/cordova-plugin-sdwebimage.git"
   },
   "author": "Julien Bouquillon <julien.bouquillon@synchronized.tv>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Synchronized-TV/cordova-plugin-sdwebimage/issues"
+    "url": "https://github.com/revolunet/cordova-plugin-sdwebimage/issues"
   },
-  "homepage": "https://github.com/Synchronized-TV/cordova-plugin-sdwebimage#readme"
+  "homepage": "https://github.com/revolunet/cordova-plugin-sdwebimage#readme"
 }
