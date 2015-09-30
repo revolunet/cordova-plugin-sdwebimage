@@ -77,6 +77,14 @@ SDWebImage.prototype.clearCache = function (success, error) {
     exec(success, error, "CDVSDWebImage", "clearCache", []);
 };
 
+SDWebImage.prototype.getCacheInfo = function (success, error) {
+    exec(success, error, "CDVSDWebImage", "getCacheInfo", []);
+};
+
+SDWebImage.prototype.prefetchURLs = function (urls, success, error) {
+    exec(success, error, "CDVSDWebImage", "prefetchURLs", urls);
+};
+
 SDWebImage.prototype.init = function(options) {
     options = options || {};
 };

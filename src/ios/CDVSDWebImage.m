@@ -1,7 +1,9 @@
 
 #import <Cordova/CDV.h>
 
+#import "SDWebImagePrefetcher.h"
 #import "UIImageView+WebCache.h"
+
 #import "WebViewProxy.h"
 
 #import "CDVSDWebImage.h"
@@ -13,18 +15,22 @@
   NSOperationQueue* queue = [[NSOperationQueue alloc] init];
   [queue setMaxConcurrentOperationCount:15];
 
-  // intercept all UIWebView requests starting with http://intercept
-  [WebViewProxy handleRequestsWithHost:@"intercept" handler:^(NSURLRequest* req, WVPResponse *res) {
+  // intercepts http://proxy requests
+  NSString *proxyHostName = @"proxy";
 
-    NSURL *requestUrl = [req.URL.absoluteString substringFromIndex:([@"http://intercept" length] + 1)];
+  [WebViewProxy handleRequestsWithHost:proxyHostName handler:^(NSURLRequest* req, WVPResponse *res) {
 
-    NSLog(@"requestUrl: %@", requestUrl);
+    NSURL *requestUrl = [NSURL URLWithString:[req.URL.absoluteString substringFromIndex:([[NSString stringWithFormat:@"http://%@", proxyHostName] length] + 1)]];
+    NSArray* components = [requestUrl.absoluteString componentsSeparatedByString:@"#"];
+      NSURL* myURLminusFragment = [NSURL URLWithString: components[0]];
+
+    NSLog(@"requestUrl: %@", myURLminusFragment);
 
     // Set off a download job
-    NSOperation *job = [manager downloadImageWithURL:requestUrl options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize)
+    NSOperation *job = [manager downloadImageWithURL:myURLminusFragment options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize)
     {
       // download progress
-      NSLog(@"progress %d %d", receivedSize, expectedSize);
+      NSLog(@"progress %ld %ld", (long)receivedSize, (long)expectedSize);
     }
     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
     {
@@ -34,6 +40,8 @@
         [res setHeader:@"Cache-Control" value:[NSString stringWithFormat:@"max-age=%i", 365 * 24 * 60 * 60]];
         // return it
         [res respondWithImage:image];
+
+          NSLog(@"got %@ from %ld", myURLminusFragment, cacheType);
       } else {
         NSLog(@"error");
       }
@@ -46,6 +54,7 @@
 - (void)pluginInitialize {
   indexes = [NSMutableDictionary new];
   manager = [SDWebImageManager sharedManager];
+ // prefetcher = [SDWebImagePrefetcher init];
   SDWebImageManager.sharedManager.delegate = self;
   [[SDWebImageDownloader sharedDownloader] setMaxConcurrentDownloads:6];
   [self _setupProxy];
@@ -66,7 +75,7 @@
     }
     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
     {
-      if (image)
+      if (image && finished)
       {
         // If we have an image. Switch it to a base64 image and send it back to web land to be injected
         NSString *base64Image = [UIImageJPEGRepresentation(image, [[options objectForKey:@"quality"] floatValue]) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
@@ -93,9 +102,29 @@
 
 - (void)getCacheInfo:(CDVInvokedUrlCommand*)command
 {
-  NSLog(@"getDiskCount: %d", [manager.imageCache getDiskCount]);
-  NSLog(@"getSize: %d", [manager.imageCache getSize]);
-  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ok"];
+    NSString *getDiskCount = [NSString stringWithFormat:@"%ld", [manager.imageCache getDiskCount]];
+    NSString *getSize = [NSString stringWithFormat:@"%ld", [manager.imageCache getSize]];
+    NSDictionary *infos = [ [NSDictionary alloc]
+                               initWithObjectsAndKeys :
+                                 getDiskCount, @"getDiskCount",
+                                 getSize, @"getSize",
+                                 nil
+                            ];
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary: infos];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)prefetchURLs:(CDVInvokedUrlCommand*)command
+{
+    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:command.arguments
+                                                      progress:^(NSUInteger noOfFinishedUrls, NSUInteger noOfTotalUrls) {
+                                                          NSLog(@"progress %ld %ld", (long)noOfFinishedUrls, (long)noOfTotalUrls);
+                                                      }
+                                                     completed:^(NSUInteger noOfFinishedUrls, NSUInteger noOfSkippedUrls) {
+                                                          NSLog(@"Finished");
+                                                         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ok"];
+                                                         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                                                     }];
+
 }
 @end
